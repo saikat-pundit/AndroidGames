@@ -84,13 +84,65 @@ class GameEngine(val cols: Int = 6, val rows: Int = 9) {
 
     fun getAIMove(): Pair<Int, Int>? {
         val validMoves = mutableListOf<Pair<Int, Int>>()
+        var bestMove: Pair<Int, Int>? = null
+        var bestScore = Int.MIN_VALUE
+
         for (i in 0 until cols) {
             for (j in 0 until rows) {
                 if (grid[i][j].owner == 0 || grid[i][j].owner == 2) {
                     validMoves.add(Pair(i, j))
+                    val simulatedEngine = this.clone()
+                    simulatedEngine.play(i, j)
+                    if (simulatedEngine.isGameOver && simulatedEngine.currentPlayer == 2) {
+                        return Pair(i, j)
+                    }
+                    val score = evaluateBoard(simulatedEngine)
+                    if (score > bestScore || (score == bestScore && Math.random() > 0.5)) {
+                        bestScore = score
+                        bestMove = Pair(i, j)
+                    }
                 }
             }
         }
-        return if (validMoves.isNotEmpty()) validMoves.random() else null
+        
+        return bestMove ?: if (validMoves.isNotEmpty()) validMoves.random() else null
+    }
+    private fun clone(): GameEngine {
+        val copy = GameEngine(cols, rows)
+        copy.currentPlayer = this.currentPlayer
+        copy.isGameOver = this.isGameOver
+        for (i in 0 until cols) {
+            for (j in 0 until rows) {
+                copy.grid[i][j].owner = this.grid[i][j].owner
+                copy.grid[i][j].mass = this.grid[i][j].mass
+            }
+        }
+        return copy
+    }
+    private fun evaluateBoard(simulatedEngine: GameEngine): Int {
+        var myAtoms = 0
+        var enemyAtoms = 0
+        var vulnerability = 0
+        
+        for (i in 0 until cols) {
+            for (j in 0 until rows) {
+                val cell = simulatedEngine.grid[i][j]
+                
+                if (cell.owner == 2) { // Computer's atoms
+                    myAtoms += cell.mass
+                    for ((nx, ny) in simulatedEngine.getNeighbors(i, j)) {
+                        val neighbor = simulatedEngine.grid[nx][ny]
+                        val neighborCriticalMass = simulatedEngine.getNeighbors(nx, ny).size - 1
+                        
+                        if (neighbor.owner == 1 && neighbor.mass == neighborCriticalMass) {
+                            vulnerability += 20 // HUGE penalty for leaving atoms in danger
+                        }
+                    }
+                } else if (cell.owner == 1) { // Player's atoms
+                    enemyAtoms += cell.mass
+                }
+            }
+        }
+        return (myAtoms * 2) - enemyAtoms - vulnerability
     }
 }
