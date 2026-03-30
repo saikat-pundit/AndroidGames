@@ -1,96 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#121212"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="32dp">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#121212" android:gravity="center"
+    android:orientation="vertical" android:padding="32dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="MULTI-GAME HUB"
-        android:textColor="#FFFFFF"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="24dp"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="CHOOSE GAME" android:textColor="#FFFFFF"
+        android:textSize="32sp" android:textStyle="bold" android:layout_marginBottom="48dp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select Game:"
-        android:textColor="#AAAAAA"
-        android:textSize="16sp"
-        android:layout_marginBottom="8dp"/>
+    <Button android:id="@+id/btnChainGame" android:layout_width="match_parent" android:layout_height="80dp"
+        android:text="Chain Reaction" android:backgroundTint="#FF5252" android:textSize="20sp" android:layout_marginBottom="16dp"/>
 
-    <RadioGroup
-        android:id="@+id/rgGameSelection"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginBottom="32dp">
-
-        <RadioButton
-            android:id="@+id/rbChainReaction"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chain Reaction"
-            android:textColor="#FFF"
-            android:buttonTint="#FF9800"
-            android:checked="true"
-            android:layout_marginEnd="16dp"/>
-
-        <RadioButton
-            android:id="@+id/rbLudo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ludo"
-            android:textColor="#FFF"
-            android:buttonTint="#FF9800"/>
-    </RadioGroup>
-
-    <Button
-        android:id="@+id/btnVsAi"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="Play vs Computer"
-        android:backgroundTint="#4CAF50"
-        android:layout_marginBottom="16dp"/>
-
-    <Button
-        android:id="@+id/btnHost"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="Host Online Game"
-        android:backgroundTint="#2196F3"
-        android:layout_marginBottom="16dp"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/etRoomCode"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="60dp"
-            android:hint="4-Digit Code"
-            android:textColor="#FFF"
-            android:textColorHint="#888"
-            android:inputType="number"
-            android:maxLength="4"
-            android:backgroundTint="#FFF"
-            android:gravity="center"/>
-
-        <Button
-            android:id="@+id/btnJoin"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:text="Join"
-            android:backgroundTint="#FF9800"
-            android:layout_marginStart="8dp"/>
-    </LinearLayout>
+    <Button android:id="@+id/btnLudoGame" android:layout_width="match_parent" android:layout_height="80dp"
+        android:text="Ludo (2 Player)" android:backgroundTint="#4CAF50" android:textSize="20sp"/>
 </LinearLayout>
