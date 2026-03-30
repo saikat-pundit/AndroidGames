@@ -7,30 +7,25 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.random.Random
+package com.example.chainreact
+import android.content.Intent
+import android.os.Bundle
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        findViewById<Button>(R.id.btnVsAi).setOnClickListener {
-            startGame(mode = "AI", roomCode = "")
+        findViewById<Button>(R.id.btnChainGame).setOnClickListener {
+            startActivity(Intent(this, SetupActivity::class.java).putExtra("GAME_TYPE", "CHAIN"))
         }
-
-        findViewById<Button>(R.id.btnHost).setOnClickListener {
-            val code = String.format("%04d", Random.nextInt(10000))
-            startGame(mode = "HOST", roomCode = code)
-        }
-
-        findViewById<Button>(R.id.btnJoin).setOnClickListener {
-            val code = findViewById<EditText>(R.id.etRoomCode).text.toString()
-            if (code.length == 4) {
-                startGame(mode = "JOIN", roomCode = code)
-            } else {
-                Toast.makeText(this, "Enter a valid 4-digit code", Toast.LENGTH_SHORT).show()
-            }
+        findViewById<Button>(R.id.btnLudoGame).setOnClickListener {
+            startActivity(Intent(this, SetupActivity::class.java).putExtra("GAME_TYPE", "LUDO"))
         }
     }
+}
 
     private fun startGame(mode: String, roomCode: String) {
         val intent = Intent(this, GameActivity::class.java).apply {
