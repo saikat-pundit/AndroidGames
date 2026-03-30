@@ -88,27 +88,36 @@ class GameActivity : AppCompatActivity() {
 
     private fun updateUI() {
         boardView.invalidate()
-        if (engine.isGameOver) {
-            // FIX 1: If currentPlayer is still 1 (Red) when the game ends, Red made the winning move!
-            tvStatus.text = if (engine.currentPlayer == 1) "RED WINS!" else "BLUE WINS!"
-            tvStatus.setTextColor(Color.YELLOW)
+        val myColor = if (myPlayerId == 1) Color.parseColor("#FF5252") else Color.parseColor("#448AFF")
+        val opponentColor = if (myPlayerId == 1) Color.parseColor("#448AFF") else Color.parseColor("#FF5252")
 
-            // FIX 2: Automatically return to the home page after 3 seconds
+        if (engine.isGameOver) {
+            // Check if the current user made the winning move
+            val didIWin = (engine.currentPlayer == myPlayerId)
+
+            if (didIWin) {
+                tvStatus.text = "YOU WIN! 🎉"
+                tvStatus.setTextColor(Color.YELLOW)
+            } else {
+                tvStatus.text = if (mode == "AI") "COMPUTER WINS!" else "FRIEND WINS!"
+                tvStatus.setTextColor(Color.LTGRAY)
+            }
             lifecycleScope.launch {
-                delay(3000)
-                finish() // Closes this activity and returns to MainActivity
+                delay(2000)
+                finish() 
             }
         } else {
-            if (engine.currentPlayer == 1) {
-                tvStatus.text = "Red's Turn"
-                tvStatus.setTextColor(Color.parseColor("#FF5252"))
+            val isMyTurn = (engine.currentPlayer == myPlayerId)
+
+            if (isMyTurn) {
+                tvStatus.text = "Your Turn"
+                tvStatus.setTextColor(myColor)
             } else {
-                tvStatus.text = "Blue's Turn"
-                tvStatus.setTextColor(Color.parseColor("#448AFF"))
+                tvStatus.text = if (mode == "AI") "Computer's Turn" else "Friend's Turn"
+                tvStatus.setTextColor(opponentColor)
             }
         }
     }
-
     private fun pushStateToNetwork() {
         lifecycleScope.launch {
             NetworkManager.updateGameState(roomCode, GameState.fromEngine(engine))
