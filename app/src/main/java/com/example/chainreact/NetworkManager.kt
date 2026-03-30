@@ -60,20 +60,21 @@ object NetworkManager {
 data class GameState(
     var currentPlayer: Int = 1,
     var isGameOver: Boolean = false,
-    var serializedGrid: String = "" // "owner,mass|owner,mass..."
+    var serializedGrid: String = "",
+    var ludoState: String = "" // NEW: Holds Ludo Token Data and Dice
 ) {
     companion object {
-        fun fromEngine(engine: GameEngine): GameState {
+        fun fromChainEngine(engine: GameEngine): GameState {
             val sb = java.lang.StringBuilder()
             for (i in 0 until engine.cols) {
                 for (j in 0 until engine.rows) {
                     sb.append("${engine.grid[i][j].owner},${engine.grid[i][j].mass}|")
                 }
             }
-            return GameState(engine.currentPlayer, engine.isGameOver, sb.toString())
+            return GameState(engine.currentPlayer, engine.isGameOver, sb.toString(), "")
         }
 
-        fun applyToEngine(state: GameState, engine: GameEngine) {
+        fun applyToChainEngine(state: GameState, engine: GameEngine) {
             engine.currentPlayer = state.currentPlayer
             engine.isGameOver = state.isGameOver
             val cells = state.serializedGrid.split("|")
